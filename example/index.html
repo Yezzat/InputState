@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>cannon.js + three.js physics shooter</title>
+        <style>
+        ::selection{background-color:none; color:inherit;}
+
+        .keyboard{
+          
+          width:800px; 
+          height: 270px;
+          background-color: #111;
+          opacity: 0.9;
+          margin: 135px auto;
+          border-radius: 9px;
+          padding: 30px;
+          color: #777;
+        }
+
+        .key{
+          width: 40px; height:40px;
+          display:block;
+          background-color: none;
+          text-align: left;
+          padding-left: 8px;
+          line-height: 29px;
+          border-radius:2px;
+          float:left; margin-left: 2px;
+          margin-bottom:2px;
+          cursor: pointer;
+          transition: all 0.25s cubic-bezier(.6,.12,.49,1.6);
+        }
+
+        .upward{
+            -ms-transform: rotate(-90deg); /* IE 9 */
+            -webkit-transform: rotate(-90deg); /* Safari */
+            transform: rotate(-90deg); /* Standard syntax */
+        }
+
+        .downward{
+            -ms-transform: rotate(90deg); /* IE 9 */
+            -webkit-transform: rotate(90deg); /* Safari */
+            transform: rotate(90deg); /* Standard syntax */
+        }
+
+        .leftward{
+            -ms-transform: rotate(180deg); /* IE 9 */
+            -webkit-transform: rotate(18deg); /* Safari */
+            transform: rotate(180deg); /* Standard syntax */
+        }
+
+        .section-a{width:650px; height:260px; float:left;}
+        .section-b{width:150px; height:260px; float:left;}
+
+        .function{font-size: 12px; width:30px; height:30px; margin-bottom:15px;}
+        .small{font-size:10px; line-height:13px; text-align: center; padding:0 5px; padding-top:2px; height:28px !important;}
+        .space1{margin-right: 43px !important;}
+        .space2{margin-right: 25px !important;}
+        .dual {font-size: 14px; line-height: 20px; width:30px; }
+        .backspace {width:84px; font-size: 12px;}
+        .tab {width: 50px; line-height: 40px; font-size:13px;}
+        .letter{width:30px;}
+        .slash{width:64px;}
+        .caps{width:70px; font-size:12px; line-height:18px;}
+        .enter{width:92px; line-height:40px; text-align: center; padding-left:0;}
+        .shift.left{width: 90px;line-height: 40px; font-size:13px;}
+        .shift.right{width: 104px;line-height: 40px; font-size:13px;}
+        .ctrl{width: 50px; line-height: 40px; font-size:13px;}
+        .space{width:234px; height: 37px; border: 1px solid}
+        .arrows{position:relative; top:42px;}
+        .sec-func .key{width: 32px; font-size:10px; text-align:left; line-height:40px; float:left;}
+        .sec-func div.dual{line-height:20px;}
+        .arrows .key{text-align: center; padding-left: 7px; margin-left:2px;}
+        .hidden{visibility: hidden;}
+
+        .key:hover{
+          box-shadow:0px 0px 7px #eee; 
+          z-index:1000;
+        }
+
+        .pressed {
+          box-shadow:0px 0px 7px #666; 
+          background-color: #aaa; 
+          z-index:1000;
+        }
+
+        .used{
+          color: #eee;
+        }
+        </style>
+
+</head>
+<script src="../src/Keyboard.js"></script>
+<body>
+<div class="keyboard">
+
+  <div class="section-a">
+    <div id="escape" class="key function space1">  Esc</div>
+    <div id="F1" class="key function">  F1</div>
+    <div id="F2" class="key function">  F2</div>
+    <div id="F3" class="key function">  F3</div>
+    <div id="F4" class="key function space2">  F4</div>
+    <div id="F5" class="key function">  F5</div>
+    <div id="F6" class="key function">  F6   </div>
+    <div id="F7" class="key function">    F7 </div>  
+    <div id="F8" class="key function space2">   F8</div>
+    <div id="F9" class="key function">   F9 </div>
+    <div id="F10" class="key function"> F10</div>
+    <div id="F11" class="key function">F11 </div>
+    <div id="F12" class="key function"> F12</div>
+    <!--END FUNCTION KEYS -->
+
+    <div id="graveaccent" class="key num dual">    ~<br>`  </div>
+    <div id="1" class="key num dual">    !<br>1  </div>
+    <div id="2" class="key num dual">    @<br>2  </div>
+    <div id="3" class="key num dual">     #<br>3   </div>
+    <div id="4" class="key num dual">     $<br>4 </div>
+    <div id="5" class="key num dual">     %<br>5  </div>
+    <div id="6" class="key num dual">   ^<br>6  </div>
+    <div id="7" class="key num dual">     &<br>7  </div>
+    <div id="8" class="key num dual">     *<br>8  </div>
+    <div id="9" class="key num dual">   (<br>9</div>
+    <div id="0" class="key num dual">     )<br>0   </div>
+    <div id="dash" class="key num dual">     _<br>- </div>
+    <div id="equalsign" class="key num dual">     +<br>=  </div>
+    <div id="backspace" class="key backspace">     Backspace   </div>
+    <!--END NUMBER KEYS -->
+
+    <div id="tab" class="key tab">  Tab  </div>
+    <div id="Q" class="key letter">     Q   </div>
+    <div id="W" class="key letter">     W  </div>
+    <div id="E" class="key letter"> E </div>
+    <div id="R" class="key letter"> R</div>
+    <div id="T" class="key letter"> T </div>
+    <div id="Y" class="key letter"> Y </div>
+    <div id="U" class="key letter"> U</div>
+    <div id="I" class="key letter"> I </div>
+    <div id="O" class="key letter">O</div>
+    <div id="P" class="key letter">P</div>
+    <div id="openbracket" class="key dual"> {<Br>[</div>
+    <div id="closebracket" class="key dual"> }<br>] </div>
+    <div id="backslash" class="key letter dual slash"> |<br>\ </div>
+    <div id="caps" class="key caps">    Caps<br>Lock   </div>
+    <div id="A" class="key letter">    A   </div>
+    <div id="S" class="key letter">     S </div>
+    <div id="D" class="key letter">     D  </div>
+    <div id="F" class="key letter">     F  </div>
+    <div id="G" class="key letter">    G  </div>
+    <div id="H" class="key letter">   H </div>  
+    <div id="J" class="key letter">    J  </div>
+    <div id="K" class="key letter">    K  </div>
+    <div id="L" class="key letter">     L   </div>
+    <div id="semicolon" class="key dual">    :<br>;  </div>
+    <div id="singlequote" class="key dual">    "<br>'  </div>
+    <div id="enter" class="key enter">    Enter </div>
+
+    <div id="shift" class="key shift left">    Shift </div>
+    <div id="Z" class="key letter">    Z </div>
+    <div id="X" class="key letter">   X </div>
+    <div id="C" class="key letter">    C </div>
+    <div id="V" class="key letter">    V   </div>
+    <div id="B" class="key letter">      B    </div>    
+    <div id="N" class="key letter">      N    </div>
+    <div id="M" class="key letter">      M   </div>
+    <div id="comma" class="key dual">     < <br>,  </div>
+    <div id="period" class="key dual">     ><br>.   </div>
+    <div id="forwardslash" class="key dual">      ?<br>/    </div>
+    <div id="shift" class="key shift right">     Shift   </div>
+    <div id="ctrl" class="key ctrl">     Ctrl   </div>
+    <div id="meta" class="key">      Meta   </div>
+    <div id="alt" class="key">     Alt  </div>
+    <div id="space" class="key space">   </div>
+    <div id="alt" class="key">    Alt  </div>
+    <div id="meta" class="key">    Meta  </div>
+    <div id="print" class="key">   Prnt </div>
+    <div id="ctrl" class="key ctrl">   Ctrl </div>
+  </div>
+  <!-- end section-a-->
+
+  <div class="section-b">
+    <div class="key function small">   Prnt Scrn  </div>
+    <div class="key function small">   Scroll Lock </div>
+    <div id="pause" class="key function small">    Pause Break </div>
+
+    <div class="sec-func">
+      <div id="insert" class="key">      Insert   </div>
+      <div id="home" class="key">    Home    </div>
+      <div id="pageup" class="key dual">       Page Up     </div>
+      <div id="delete" class="key">       Del    </div>
+      <div id="end" class="key">      End     </div>
+      <div id="pagedown" class="key dual">     Page Down    </div>
+      
+      <div class="arrows">
+        <div class="key hidden"> </div>
+        <div id="up" class="key upward">&#10132;</div>
+        <div class="key hidden"></div>
+        <div id="left" class="key leftward">&#10132; </div>
+        <div id="down" class="key downward">&#10132; </div>
+        <div id="right" class="key"> &#10132;  </div>
+        </div>
+        <!-- end arrows -->
+      </div>
+      <!-- end sec-func -->
+
+  </div>
+  <!-- end section-b-->
+
+</div>
+
+<script>
+  
+  var keyboard = new Keyboard();
+
+  var keys = document.querySelectorAll('.key');
+
+  console.log(keys)
+
+  function render() {
+
+    requestAnimationFrame(render);
+
+    for (var i = 0; i < keys.length; i++) {
+      
+      var el = keys[i];
+      var key = el.id;
+      
+      if (keyboard.pressed(key)) {
+        addClass(el, 'pressed');
+        // addClass(el, 'used');
+      } else {
+        removeClass(el, 'pressed');
+      }
+    }
+  }
+
+  function hasClass(el, className) {
+    if (el.classList)
+      return el.classList.contains(className)
+    else
+      return !!el.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'))
+  }
+
+  function addClass(el, className) {
+    if (el.classList)
+      el.classList.add(className)
+    else if (!hasClass(el, className)) el.className += " " + className
+  }
+
+  function removeClass(el, className) {
+    if (el.classList)
+      el.classList.remove(className)
+    else if (hasClass(el, className)) {
+      var reg = new RegExp('(\\s|^)' + className + '(\\s|$)')
+      el.className = el.className.replace(reg, ' ')
+    }
+  }
+
+  render();
+</script>
+  
+</body>
+</html>
